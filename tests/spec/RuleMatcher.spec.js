@@ -56,6 +56,16 @@ describe("RuleMatcher", function() {
     expect(sut.redirectOnMatch(request)).toBeUndefined();
   });
 
+  it('given request url should redirect to matching rule specified with regexp', function(){
+    sut = new RuleMatcher([
+      givenRule('fo*', 'bar', true)
+    ]);
+
+    var request = givenRequest(1, 'http://foooooo.com');
+
+    expect(sut.redirectOnMatch(request)).toEqual({ redirectUrl: 'http://bar.com' });
+  });
+
   function givenRequest(id, url){
     return {
       requestId: id,
