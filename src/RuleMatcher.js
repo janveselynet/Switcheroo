@@ -5,15 +5,16 @@ var RuleMatcher = function(rules){
 
     this.redirectOnMatch = function(request){
         var rule = _.find(rules, function(rule){ 
+            var regExp = new RegExp(rule.from);
             return rule.isActive 
-            && request.url.indexOf(rule.from) > -1 
+            && regExp.test(request.url) 
             && request.requestId !== lastRequestId; 
         });
 
         if(rule){
             lastRequestId = request.requestId;
             return {
-                redirectUrl : request.url.replace(rule.from, rule.to)
+                redirectUrl : request.url.replace(new RegExp(rule.from), rule.to)
             };
         }
     };
